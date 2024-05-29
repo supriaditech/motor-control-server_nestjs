@@ -31,7 +31,8 @@ export class MotorControlService {
   }
 
   async processReceivedData(json: any) {
-    const currentTime = new Date().toISOString();
+    const currentTime = this.getCurrentLocalTime();
+    console.log(currentTime, '================================');
     const prosesData = await this.prisma.resultSpeedRpm.create({
       data: {
         speedRpm: json.calculatedRPM,
@@ -186,5 +187,10 @@ export class MotorControlService {
         }
       });
     }
+  }
+  private getCurrentLocalTime(): string {
+    const now = new Date();
+    const localTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+    return localTime.toISOString();
   }
 }

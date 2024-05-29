@@ -15,4 +15,13 @@ export class MotorControlController {
   async GetModalControl() {
     return await this.motorControlService.GetMotorControlByDate();
   }
+  @Post('get-speed-by-date')
+  async GetSpeedModalControl() {
+    return await this.motorControlService.GetSpeedMotorControlByDate();
+  }
+
+  @Post('/send-command')
+  async sendCommand() {
+    return await this.motorControlService.sendCommandToArduino(0);
+  }
 }

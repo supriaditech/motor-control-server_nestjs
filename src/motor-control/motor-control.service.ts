@@ -31,9 +31,11 @@ export class MotorControlService {
   }
 
   async processReceivedData(json: any) {
+    const currentTime = new Date().toISOString();
     const prosesData = await this.prisma.resultSpeedRpm.create({
       data: {
         speedRpm: json.calculatedRPM,
+        createdAt: currentTime,
       },
     });
 

@@ -24,4 +24,9 @@ export class MotorControlController {
   async sendCommand() {
     return await this.motorControlService.sendCommandToArduino(0);
   }
+
+  @Post('/send')
+  async processReceivedData(@Body() data: CreateModalControlDto) {
+    return await this.motorControlService.processReceivedData(data);
+  }
 }

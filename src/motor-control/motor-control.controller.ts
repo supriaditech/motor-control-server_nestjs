@@ -19,6 +19,10 @@ export class MotorControlController {
   async GetSpeedModalControl() {
     return await this.motorControlService.GetSpeedMotorControlByDate();
   }
+  @Post('get-lastspeed-by-date')
+  async GetLastSpeedModalControl() {
+    return await this.motorControlService.GetlastSpeedMotorControlByDate();
+  }
 
   @Post('/send-command')
   async sendCommand() {
@@ -28,5 +32,11 @@ export class MotorControlController {
   @Post('/send')
   async processReceivedData(@Body() data: CreateModalControlDto) {
     return await this.motorControlService.processReceivedData(data);
+  }
+
+  @Post('/delete-speed-rpm')
+  async deleteDataResaultSpeedRPM() {
+    console.log('ini dicoba');
+    return await this.motorControlService.deleteAllData();
   }
 }

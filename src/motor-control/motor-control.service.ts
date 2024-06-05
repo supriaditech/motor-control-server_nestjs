@@ -110,6 +110,24 @@ export class MotorControlService {
     }
   }
 
+  async deleteAllData() {
+    try {
+      // Menghapus semua data dari tabel 'resultSpeedRpm'
+      await this.prisma.resultSpeedRpm.deleteMany({});
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'Seluruh data berhasil dihapus',
+      };
+    } catch (error) {
+      console.error('Failed to delete all data:', error);
+      return {
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: 'Gagal menghapus seluruh data',
+      };
+    }
+  }
+
   async GetSpeedMotorControlByDate() {
     try {
       // Fetch the latest results by date, possibly limiting the amount of data returned
@@ -117,7 +135,7 @@ export class MotorControlService {
         orderBy: {
           createdAt: 'desc', // Sort by 'createdAt' column in descending order
         },
-        take: 10, // Limit the number of records retrieved, adjust this number as needed
+        // take: 10, // Limit the number of records retrieved, adjust this number as needed
       });
 
       // Check if the result array is not empty
@@ -146,10 +164,46 @@ export class MotorControlService {
     }
   }
 
+  async GetlastSpeedMotorControlByDate() {
+    try {
+      // Fetch the latest results by date, possibly limiting the amount of data returned
+      const getMotor = await this.prisma.resultSpeedRpm.findFirst({
+        orderBy: {
+          createdAt: 'desc', // Sort by 'createdAt' column in descending order
+        },
+        // take: 10, // Limit the number of records retrieved, adjust this number as needed
+      });
+      console.log(getMotor);
+      // Check if the result array is not empty
+      if (getMotor) {
+        return {
+          statusCode: HttpStatus.OK,
+          message: 'Motor control data successfully loaded',
+          data: getMotor,
+        };
+      } else {
+        // Return a different HTTP status code if no data is found
+        return {
+          statusCode: HttpStatus.NOT_FOUND, // Using NOT FOUND status for empty data
+          message: 'No motor control data found',
+          data: [],
+        };
+      }
+    } catch (error) {
+      // Handle any unexpected errors that may occur during the database query
+      console.error('Failed to retrieve motor control data:', error);
+      return {
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR, // Use appropriate status for server errors
+        message: 'Error retrieving motor control data',
+        data: null,
+      };
+    }
+  }
+
   // src/motor-control/motor-control.service.ts
 
   async sendCommandToArduino(data: number): Promise<any> {
-    data === 0;
+    data === -1;
     try {
       await new Promise((resolve, reject) => {
         this.port.write(JSON.stringify(data), (err) => {

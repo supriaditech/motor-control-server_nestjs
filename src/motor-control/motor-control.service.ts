@@ -36,6 +36,7 @@ export class MotorControlService {
     const prosesData = await this.prisma.resultSpeedRpm.create({
       data: {
         speedRpm: json.calculatedRPM,
+        seconds: Math.floor(json.currentMillis / 1000),
         createdAt: currentTime,
       },
     });

@@ -4,4 +4,6 @@ export class CreateModalControlDto {
   @IsNumber()
   @IsNotEmpty()
   rpmMotor: number;
+
+  secconds?: number;
 }
